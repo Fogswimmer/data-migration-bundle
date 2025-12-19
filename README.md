@@ -24,7 +24,7 @@ The entire migration process is described declaratively in a single YAML configu
 ## Intallation
 
 ```bash
-  composer require fogswimmer/data-migration
+  composer require --dev fogswimmer/data-migration
 ```
 
 ## Commands

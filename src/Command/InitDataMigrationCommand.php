@@ -19,16 +19,17 @@ final class InitDataMigrationCommand
             file_put_contents(
                 $configPath,
                 <<<YAML
-                data_source:
-                    type: database
-                    connection: old
+                data_migration:
+                    data_source:
+                        type: database
+                        connection: old
 
-                tables: { }
+                    tables: { }
                 YAML,
             );
         }
 
-        @mkdir('src/DataMigration/Transformer', 0777, true);
+        @mkdir('src/DataMigration/Transformers', 0777, true);
         @mkdir('src/DataMigration/PostProcessor', 0777, true);
 
         return Command::SUCCESS;
