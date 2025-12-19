@@ -130,29 +130,30 @@ OLD_DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3312/db_name
 ## Migration Configuration Example
 
 ```yaml
-data_source:
-  type: database
-  connection: old
+data_migration:
+  data_source:
+    type: database
+    connection: old
 
-tables:
-  App\Entity\Doctor:
-    source: doctor
+  tables:
+    App\Entity\Doctor:
+      source: doctor
 
-    map:
-      fullName:
-        - surname
-        - name
-        - patronymic
-      description: desc
+      map:
+        fullName:
+          - surname
+          - name
+          - patronymic
+        description: desc
 
-    transform:
-      description:
-        - strip_tags
-        - truncate: 255
+      transform:
+        description:
+          - strip_tags
+          - truncate: 255
 
-    post_process:
-      - doctor_media
-      - education_media
+      post_process:
+        - doctor_media
+        - education_media
 ```
 
 ## Field Mapping
