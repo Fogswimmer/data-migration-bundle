@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Fogswimmer\DataMigration\:
+    resource: "../src/"
+    exclude:
+      - "../src/DependencyInjection/"
+
+  _instanceof:
+    Fogswimmer\DataMigration\Contract\DataMigrationTransformerInterface:
+      tags: ["fogswimmer.migration.transformer"]
+
+    Fogswimmer\DataMigration\Contract\DataMigrationPostProcessorInterface:
+      tags: ["fogswimmer.migration.post_processor"]
