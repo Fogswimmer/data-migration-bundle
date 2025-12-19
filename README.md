@@ -56,7 +56,7 @@ For each configured entity, the migration process follows these steps:
    - restore relations
    - perform any custom logic
 
-Configuration lives in `config/data_migration.yaml`.
+Configuration lives in `config/packages/data_migration.yaml`.
 
 ---
 
