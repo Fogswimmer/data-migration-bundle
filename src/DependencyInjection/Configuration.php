@@ -1,4 +1,5 @@
 <?php
+
 namespace Fogswimmer\DataMigration\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

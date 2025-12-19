@@ -2,9 +2,9 @@
 
 namespace Fogswimmer\DataMigration\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class DataMigrationExtension extends Extension
@@ -13,7 +13,7 @@ final class DataMigrationExtension extends Extension
     {
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../../config')
+            new FileLocator(__DIR__ . '/../../config'),
         );
 
         $loader->load('services.yaml');
@@ -22,6 +22,5 @@ final class DataMigrationExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('data_migration.config', $config);
-
     }
 }

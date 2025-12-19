@@ -24,8 +24,7 @@ class DataMigrationService
         private EntityManagerInterface $em,
         private PropertyAccessorInterface $propertyAccessor,
         private IdMappingStore $idMappingStore,
-    ) {
-    }
+    ) {}
 
     public function migrate(
         DataSourceInterface $dataSource,

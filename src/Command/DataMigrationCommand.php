@@ -5,22 +5,21 @@ namespace Fogswimmer\DataMigration\Command;
 use Doctrine\Persistence\ManagerRegistry;
 use Fogswimmer\DataMigration\DataMigrationService;
 use Fogswimmer\DataMigration\DataSource\DataSourceFactory;
-use Fogswimmer\DataMigration\Helpers\DataMigrationConfigLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(
     name: 'data-migration:migrate',
-    description: 'Migrates data from old database to new database with transformation and post-processing.'
+    description: 'Migrates data from old database to new database with transformation and post-processing.',
 )]
 class DataMigrationCommand
 {
     private array $config;
+
     public function __construct(
         private DataMigrationService $dataMigrationService,
         private ManagerRegistry $doctrine,
@@ -30,24 +29,18 @@ class DataMigrationCommand
         $this->config = $this->parameterBag->get('data_migration.config');
     }
 
-
     public function __invoke(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Starting Data Migration');
 
         try {
-
             if (empty($this->config['data_source']['type'])) {
-                throw new \RuntimeException(
-                    'Missing "data_source.type" in data_migration configuration'
-                );
+                throw new \RuntimeException('Missing "data_source.type" in data_migration configuration');
             }
 
             if (empty($this->config['tables'])) {
-                throw new \RuntimeException(
-                    'No tables configured for data migration'
-                );
+                throw new \RuntimeException('No tables configured for data migration');
             }
 
             $dataSourceType = $this->config['data_source']['type'];
