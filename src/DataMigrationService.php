@@ -17,14 +17,15 @@ class DataMigrationService
      * @param iterable<DataMigrationPostProcessorInterface> $postProcessors
      */
     public function __construct(
-        #[AutowireIterator('app.migration.transformer')]
+        #[AutowireIterator('fogswimmer.migration.transformer')]
         private iterable $transformers,
-        #[AutowireIterator('app.migration.post_processor')]
+        #[AutowireIterator('fogswimmer.migration.post_processor')]
         private iterable $postProcessors,
         private EntityManagerInterface $em,
         private PropertyAccessorInterface $propertyAccessor,
         private IdMappingStore $idMappingStore,
-    ) {}
+    ) {
+    }
 
     public function migrate(
         DataSourceInterface $dataSource,
