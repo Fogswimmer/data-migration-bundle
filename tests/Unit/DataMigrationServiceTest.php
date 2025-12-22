@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityRepository;
 use Fogswimmer\DataMigration\Contract\DataMigrationPostProcessorInterface;
 use Fogswimmer\DataMigration\Contract\DataMigrationTransformerInterface;
 use Fogswimmer\DataMigration\Contract\DataSourceInterface;
-use Fogswimmer\DataMigration\Contract\RequiresAdvancedQuerySourceInterface;
 use Fogswimmer\DataMigration\DataMigrationService;
 use Fogswimmer\DataMigration\Helpers\IdMappingStore;
 use PHPUnit\Framework\TestCase;
@@ -668,54 +667,6 @@ final class DataMigrationServiceTest extends TestCase
 
         $this->assertEquals(3, $postProcessor->callCount);
         $this->assertEquals(['John', 'Jane', 'Bob'], $postProcessor->processedNames);
-    }
-
-    public function testDatabaseAwarePostProcessorFailsWithSimpleDataSource(): void
-    {
-        $postProcessor = new class implements DataMigrationPostProcessorInterface, RequiresAdvancedQuerySourceInterface {
-            public function getName(): string
-            {
-                return 'db_only';
-            }
-
-            public function process(
-                array $oldRow,
-                object $entity,
-                DataSourceInterface $source,
-                mixed $params = null,
-            ): void {
-            }
-        };
-
-        $dataSource = $this->createMock(DataSourceInterface::class);
-        $dataSource->method('fetchAll')->willReturn([
-            ['id' => 1, 'name' => 'John'],
-        ]);
-
-        $persistedEntities = [];
-
-        $this->setupEntityManager($persistedEntities);
-
-        $service = new DataMigrationService(
-            [],
-            [$postProcessor],
-            $this->em,
-            $this->propertyAccessor,
-            $this->idMappingStore
-        );
-
-        $config = [
-            'source' => 'users',
-            'map' => [
-                'name' => 'name',
-            ],
-            'post_process' => ['db_only'],
-        ];
-
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('requires AdvancedQueryDataSourceInterface');
-
-        $service->migrate($dataSource, TestEntity::class, $config);
     }
 }
 

@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Fogswimmer\DataMigration\Contract\DataMigrationPostProcessorInterface;
 use Fogswimmer\DataMigration\Contract\DataMigrationTransformerInterface;
 use Fogswimmer\DataMigration\Contract\DataSourceInterface;
-use Fogswimmer\DataMigration\Contract\RequiresAdvancedQuerySourceInterface;
 use Fogswimmer\DataMigration\Helpers\IdMappingStore;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -146,7 +145,6 @@ class DataMigrationService
         foreach ($postProcessors as $postProcessor) {
             if (\is_string($postProcessor)) {
                 if ($processor = $this->getPostProcessor($postProcessor)) {
-                    $this->checkPostProcessorInstance($processor, $dataSource);
                     $processor->process($oldRow, $entity, $dataSource);
                 }
                 continue;
@@ -157,7 +155,6 @@ class DataMigrationService
                 $params = $postProcessor[$name] ?? null;
 
                 if ($processor = $this->getPostProcessor($name)) {
-                    $this->checkPostProcessorInstance($processor, $dataSource);
                     $processor->process($oldRow, $entity, $dataSource, $params);
                 }
             }
@@ -196,15 +193,5 @@ class DataMigrationService
         }
 
         $this->em->flush();
-    }
-
-    private function checkPostProcessorInstance(object $postProcessor, DataSourceInterface $dataSource): void
-    {
-        if (
-            $postProcessor instanceof RequiresAdvancedQuerySourceInterface
-            && !$dataSource instanceof AdvancedQueryDataSourceInterface
-        ) {
-            throw new \LogicException(\sprintf('Post processor "%s" requires AdvancedQueryDataSourceInterface', $postProcessor::class));
-        }
     }
 }
