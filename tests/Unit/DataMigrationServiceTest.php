@@ -2,15 +2,16 @@
 
 namespace Fogswimmer\DataMigration\Tests\Unit;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Fogswimmer\DataMigration\Contract\DataMigrationPostProcessorInterface;
 use Fogswimmer\DataMigration\Contract\DataMigrationTransformerInterface;
 use Fogswimmer\DataMigration\Contract\DataSourceInterface;
+use Fogswimmer\DataMigration\Contract\RequiresAdvancedQuerySourceInterface;
 use Fogswimmer\DataMigration\DataMigrationService;
 use Fogswimmer\DataMigration\Helpers\IdMappingStore;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 
 final class DataMigrationServiceTest extends TestCase
 {
@@ -347,7 +348,7 @@ final class DataMigrationServiceTest extends TestCase
                 array $oldRow,
                 object $entity,
                 DataSourceInterface $dataSource,
-                mixed $params = null
+                mixed $params = null,
             ): void {
                 $this->wasCalled = true;
                 $this->receivedOldRow = $oldRow;
@@ -402,7 +403,7 @@ final class DataMigrationServiceTest extends TestCase
                 array $oldRow,
                 object $entity,
                 DataSourceInterface $dataSource,
-                mixed $params = null
+                mixed $params = null,
             ): void {
                 $this->receivedParams = $params;
             }
@@ -430,7 +431,7 @@ final class DataMigrationServiceTest extends TestCase
                 'name' => 'name',
             ],
             'post_process' => [
-                ['processor_with_params' => ['table' => 'media', 'type' => 'image']]
+                ['processor_with_params' => ['table' => 'media', 'type' => 'image']],
             ],
         ];
 
@@ -453,7 +454,7 @@ final class DataMigrationServiceTest extends TestCase
                 array $oldRow,
                 object $entity,
                 DataSourceInterface $dataSource,
-                mixed $params = null
+                mixed $params = null,
             ): void {
                 $this->wasCalled = true;
             }
@@ -471,7 +472,7 @@ final class DataMigrationServiceTest extends TestCase
                 array $oldRow,
                 object $entity,
                 DataSourceInterface $dataSource,
-                mixed $params = null
+                mixed $params = null,
             ): void {
                 $this->wasCalled = true;
             }
@@ -521,7 +522,7 @@ final class DataMigrationServiceTest extends TestCase
                 array $oldRow,
                 object $entity,
                 DataSourceInterface $dataSource,
-                mixed $params = null
+                mixed $params = null,
             ): void {
                 $this->receivedDataSource = $dataSource;
 
@@ -531,12 +532,13 @@ final class DataMigrationServiceTest extends TestCase
 
         $dataSource = $this->createMock(DataSourceInterface::class);
         $dataSource->method('fetchAll')->willReturnCallback(function ($table) {
-            if ($table === 'users') {
+            if ('users' === $table) {
                 return [['id' => 1, 'name' => 'John']];
             }
-            if ($table === 'related_table') {
+            if ('related_table' === $table) {
                 return [['id' => 1, 'data' => 'related']];
             }
+
             return [];
         });
 
@@ -579,7 +581,7 @@ final class DataMigrationServiceTest extends TestCase
                 array $oldRow,
                 object $entity,
                 DataSourceInterface $dataSource,
-                mixed $params = null
+                mixed $params = null,
             ): void {
                 $this->wasCalled = true;
             }
@@ -629,9 +631,9 @@ final class DataMigrationServiceTest extends TestCase
                 array $oldRow,
                 object $entity,
                 DataSourceInterface $dataSource,
-                mixed $params = null
+                mixed $params = null,
             ): void {
-                $this->callCount++;
+                ++$this->callCount;
                 $this->processedNames[] = $entity->name;
             }
         };
@@ -666,6 +668,54 @@ final class DataMigrationServiceTest extends TestCase
 
         $this->assertEquals(3, $postProcessor->callCount);
         $this->assertEquals(['John', 'Jane', 'Bob'], $postProcessor->processedNames);
+    }
+
+    public function testDatabaseAwarePostProcessorFailsWithSimpleDataSource(): void
+    {
+        $postProcessor = new class implements DataMigrationPostProcessorInterface, RequiresAdvancedQuerySourceInterface {
+            public function getName(): string
+            {
+                return 'db_only';
+            }
+
+            public function process(
+                array $oldRow,
+                object $entity,
+                DataSourceInterface $source,
+                mixed $params = null,
+            ): void {
+            }
+        };
+
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $dataSource->method('fetchAll')->willReturn([
+            ['id' => 1, 'name' => 'John'],
+        ]);
+
+        $persistedEntities = [];
+
+        $this->setupEntityManager($persistedEntities);
+
+        $service = new DataMigrationService(
+            [],
+            [$postProcessor],
+            $this->em,
+            $this->propertyAccessor,
+            $this->idMappingStore
+        );
+
+        $config = [
+            'source' => 'users',
+            'map' => [
+                'name' => 'name',
+            ],
+            'post_process' => ['db_only'],
+        ];
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('requires AdvancedQueryDataSourceInterface');
+
+        $service->migrate($dataSource, TestEntity::class, $config);
     }
 }
 

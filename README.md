@@ -249,6 +249,8 @@ interface DataMigrationPostProcessorInterface
 
 ### Example Post Processor
 
+1. Simple Data Source (e.h. json)
+
 ```php
 final class DoctorMediaProcessor implements DataMigrationPostProcessorInterface
 {
@@ -264,6 +266,48 @@ final class DoctorMediaProcessor implements DataMigrationPostProcessorInterface
     ): void {
         // custom logic here
     }
+}
+```
+
+2.When usign database as source, please use RequiresAdvancedQuerySourceInterface to be able to use such methods as **fetchColumn**, **fetchOne**, **fetchAllByQuery** from **AdvancedQueryDataSourceInterface**
+
+```php
+final class DoctorMediaPostProcessor
+    implements DataMigrationPostProcessorInterface, RequiresAdvancedQuerySourceInterface
+{
+    public function getName(): string
+    {
+        return 'doctor_media';
+    }
+
+    public function process(
+        array $oldRow,
+        object $entity,
+        DataSourceInterface $source,
+        ?array $params = null,
+    ): void {
+
+    }
+}
+
+interface AdvancedQueryDataSourceInterface extends DataSourceInterface
+{
+    public function fetchColumn(
+        string $resource,
+        string $column,
+        array $criteria = [],
+    ): array;
+
+    public function fetchOne(
+        string $resource,
+        string $column,
+        array $criteria = [],
+    ): mixed;
+
+    public function fetchAllByQuery(
+        string $sql,
+        array $params = [],
+    ): iterable;
 }
 
 ```
