@@ -1,10 +1,10 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Command;
+namespace Grokhotov\DataMigration\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Fogswimmer\DataMigration\DataMigrationService;
-use Fogswimmer\DataMigration\DataSource\DataSourceFactory;
+use Grokhotov\DataMigration\DataMigrationService;
+use Grokhotov\DataMigration\DataSource\DataSourceFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -93,7 +93,7 @@ class DataMigrationCommand
     {
         return preg_replace_callback(
             '/%([^%]+)%/',
-            fn($matches) => $this->parameterBag->get($matches[1]),
+            fn ($matches) => $this->parameterBag->get($matches[1]),
             $path,
         );
     }

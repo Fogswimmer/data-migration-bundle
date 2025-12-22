@@ -1,6 +1,6 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Helpers;
+namespace Grokhotov\DataMigration\Helpers;
 
 class IdMappingStore
 {

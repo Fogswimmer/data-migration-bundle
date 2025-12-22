@@ -1,7 +1,9 @@
 <?php
 
-namespace Fogswimmer\DataMigration;
+namespace Grokhotov\DataMigration;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DataMigrationBundle extends Bundle {}
+class DataMigrationBundle extends Bundle
+{
+}

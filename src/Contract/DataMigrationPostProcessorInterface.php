@@ -1,10 +1,10 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Contract;
+namespace Grokhotov\DataMigration\Contract;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AutoconfigureTag('fogswimmer.migration.post_processor')]
+#[AutoconfigureTag('grokhotov.migration.post_processor')]
 interface DataMigrationPostProcessorInterface
 {
     public function getName(): string;

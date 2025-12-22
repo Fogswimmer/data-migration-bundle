@@ -1,5 +1,5 @@
 {
-  "name": "fogswimmer/data-migration",
+  "name": "grokhotov/data-migration",
   "type": "symfony-bundle",
   "description": "Declarative data migration between legacy databases and Symfony entities.",
   "keywords": [
@@ -9,7 +9,7 @@
   ],
   "authors": [
     {
-      "name": "Andrew Fogswimmer"
+      "name": "Andrey Dyakov"
     }
   ],
   "license": "MIT",
@@ -35,12 +35,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Fogswimmer\\DataMigration\\": "src/"
+      "Grokhotov\\DataMigration\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Fogswimmer\\DataMigration\\Tests\\": "tests/"
+      "Grokhotov\\DataMigration\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "dev",

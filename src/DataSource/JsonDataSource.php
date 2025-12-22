@@ -1,12 +1,14 @@
 <?php
 
-namespace Fogswimmer\DataMigration\DataSource;
+namespace Grokhotov\DataMigration\DataSource;
 
-use Fogswimmer\DataMigration\Contract\DataSourceInterface;
+use Grokhotov\DataMigration\Contract\DataSourceInterface;
 
 final class JsonDataSource implements DataSourceInterface
 {
-    public function __construct(private string $path) {}
+    public function __construct(private string $path)
+    {
+    }
 
     public function fetchAll(string $source, array $criteria = []): iterable
     {

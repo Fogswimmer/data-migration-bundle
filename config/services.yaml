@@ -3,14 +3,14 @@ services:
     autowire: true
     autoconfigure: true
 
-  Fogswimmer\DataMigration\:
+  Grokhotov\DataMigration\:
     resource: "../src/"
     exclude:
       - "../src/DependencyInjection/"
 
   _instanceof:
-    Fogswimmer\DataMigration\Contract\DataMigrationTransformerInterface:
-      tags: ["fogswimmer.migration.transformer"]
+    Grokhotov\DataMigration\Contract\DataMigrationTransformerInterface:
+      tags: ["grokhotov.migration.transformer"]
 
-    Fogswimmer\DataMigration\Contract\DataMigrationPostProcessorInterface:
-      tags: ["fogswimmer.migration.post_processor"]
+    Grokhotov\DataMigration\Contract\DataMigrationPostProcessorInterface:
+      tags: ["grokhotov.migration.post_processor"]

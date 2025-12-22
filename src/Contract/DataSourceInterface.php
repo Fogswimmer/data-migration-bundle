@@ -1,6 +1,6 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Contract;
+namespace Grokhotov\DataMigration\Contract;
 
 interface DataSourceInterface
 {

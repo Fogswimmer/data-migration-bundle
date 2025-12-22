@@ -1,12 +1,12 @@
 <?php
 
-namespace Fogswimmer\DataMigration;
+namespace Grokhotov\DataMigration;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Fogswimmer\DataMigration\Contract\DataMigrationPostProcessorInterface;
-use Fogswimmer\DataMigration\Contract\DataMigrationTransformerInterface;
-use Fogswimmer\DataMigration\Contract\DataSourceInterface;
-use Fogswimmer\DataMigration\Helpers\IdMappingStore;
+use Grokhotov\DataMigration\Contract\DataMigrationPostProcessorInterface;
+use Grokhotov\DataMigration\Contract\DataMigrationTransformerInterface;
+use Grokhotov\DataMigration\Contract\DataSourceInterface;
+use Grokhotov\DataMigration\Helpers\IdMappingStore;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -17,9 +17,9 @@ class DataMigrationService
      * @param iterable<DataMigrationPostProcessorInterface> $postProcessors
      */
     public function __construct(
-        #[AutowireIterator('fogswimmer.migration.transformer')]
+        #[AutowireIterator('grokhotov.migration.transformer')]
         private iterable $transformers,
-        #[AutowireIterator('fogswimmer.migration.post_processor')]
+        #[AutowireIterator('grokhotov.migration.post_processor')]
         private iterable $postProcessors,
         private EntityManagerInterface $em,
         private PropertyAccessorInterface $propertyAccessor,

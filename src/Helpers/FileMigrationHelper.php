@@ -1,6 +1,6 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Helpers;
+namespace Grokhotov\DataMigration\Helpers;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Path;
@@ -12,7 +12,8 @@ class FileMigrationHelper
     public function __construct(
         #[Autowire('%var.dir%')]
         private string $varDir,
-    ) {}
+    ) {
+    }
 
     public function makeUploadedFile(string $oldRelativePath): ?UploadedFile
     {

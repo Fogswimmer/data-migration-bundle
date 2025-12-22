@@ -1,13 +1,15 @@
 <?php
 
-namespace Fogswimmer\DataMigration\DataSource;
+namespace Grokhotov\DataMigration\DataSource;
 
 use Doctrine\DBAL\Connection;
-use Fogswimmer\DataMigration\Contract\AdvancedQueryDataSourceInterface;
+use Grokhotov\DataMigration\Contract\AdvancedQueryDataSourceInterface;
 
 final class DatabaseDataSource implements AdvancedQueryDataSourceInterface
 {
-    public function __construct(private Connection $connection) {}
+    public function __construct(private Connection $connection)
+    {
+    }
 
     public function fetchAll(string $resource, array $criteria = []): iterable
     {
@@ -75,6 +77,6 @@ final class DatabaseDataSource implements AdvancedQueryDataSourceInterface
             $params[$field] = $value;
         }
 
-        return [' WHERE ' . implode(' AND ', $where), $params];
+        return [' WHERE '.implode(' AND ', $where), $params];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Command;
+namespace Grokhotov\DataMigration\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

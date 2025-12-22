@@ -1,10 +1,10 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Contract;
+namespace Grokhotov\DataMigration\Contract;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AutoconfigureTag('fogswimmer.migration.transformer')]
+#[AutoconfigureTag('grokhotov.migration.transformer')]
 interface DataMigrationTransformerInterface
 {
     public function getName(): string;

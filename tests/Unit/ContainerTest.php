@@ -1,12 +1,12 @@
 <?php
 
-namespace Fogswimmer\DataMigration\Tests\Functional;
+namespace Grokhotov\DataMigration\Tests\Functional;
 
-use Fogswimmer\DataMigration\Command\DataMigrationCommand;
-use Fogswimmer\DataMigration\DataMigrationBundle;
-use Fogswimmer\DataMigration\DataMigrationService;
-use Fogswimmer\DataMigration\DataSource\DataSourceFactory;
-use Fogswimmer\DataMigration\DependencyInjection\DataMigrationExtension;
+use Grokhotov\DataMigration\Command\DataMigrationCommand;
+use Grokhotov\DataMigration\DataMigrationBundle;
+use Grokhotov\DataMigration\DataMigrationService;
+use Grokhotov\DataMigration\DataSource\DataSourceFactory;
+use Grokhotov\DataMigration\DependencyInjection\DataMigrationExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -77,18 +77,18 @@ final class ContainerTest extends TestCase
         $extension->load([], $container);
 
         $this->assertTrue(
-            $container->hasDefinition(DataMigrationService::class) ||
-            $container->hasAlias(DataMigrationService::class)
+            $container->hasDefinition(DataMigrationService::class)
+            || $container->hasAlias(DataMigrationService::class)
         );
 
         $this->assertTrue(
-            $container->hasDefinition(DataSourceFactory::class) ||
-            $container->hasAlias(DataSourceFactory::class)
+            $container->hasDefinition(DataSourceFactory::class)
+            || $container->hasAlias(DataSourceFactory::class)
         );
 
         $this->assertTrue(
-            $container->hasDefinition(DataMigrationCommand::class) ||
-            $container->hasAlias(DataMigrationCommand::class)
+            $container->hasDefinition(DataMigrationCommand::class)
+            || $container->hasAlias(DataMigrationCommand::class)
         );
     }
 

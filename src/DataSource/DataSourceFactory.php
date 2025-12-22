@@ -1,15 +1,16 @@
 <?php
 
-namespace Fogswimmer\DataMigration\DataSource;
+namespace Grokhotov\DataMigration\DataSource;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Fogswimmer\DataMigration\Contract\DataSourceInterface;
+use Grokhotov\DataMigration\Contract\DataSourceInterface;
 
 final class DataSourceFactory
 {
     public function __construct(
         private ManagerRegistry $doctrine,
-    ) {}
+    ) {
+    }
 
     public function create(array $config): DataSourceInterface
     {
