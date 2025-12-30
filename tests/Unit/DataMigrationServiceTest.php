@@ -9,13 +9,14 @@ use Fogswimmer\DataMigration\Contract\DataMigrationTransformerInterface;
 use Fogswimmer\DataMigration\Contract\DataSourceInterface;
 use Fogswimmer\DataMigration\DataMigrationService;
 use Fogswimmer\DataMigration\Helpers\IdMappingStore;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 final class DataMigrationServiceTest extends TestCase
 {
     private DataMigrationService $service;
-    private EntityManagerInterface $em;
+    private EntityManagerInterface|MockObject $em;
     private PropertyAccessor $propertyAccessor;
     private IdMappingStore $idMappingStore;
     private int $autoIncrementId = 1;
@@ -32,6 +33,7 @@ final class DataMigrationServiceTest extends TestCase
     {
         $repository = $this->createMock(EntityRepository::class);
         $repository->method('findAll')->willReturn([]);
+        /* @var EntityManagerInterface|MockObject  * */
         $this->em->method('getRepository')->willReturn($repository);
 
         $autoIncrementId = &$this->autoIncrementId;
